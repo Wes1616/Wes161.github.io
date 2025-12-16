@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTFOLIO | WESLEY AMAVI | SISR</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --bg-color: #F5F5F5;
+            --text-color: #000000;
+            --border-color: #000000;
+            --border-width: 1px;
+            --border-style: var(--border-width) solid var(--border-color);
+            --font-main: 'Space Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            font-size: 14px;
+            line-height: 1.5;
+            text-transform: uppercase;
+            -webkit-font-smoothing: antialiased;
+            padding: 20px;
+        }
+
+        /* --- TYPO --- */
+        h1 { font-size: 24px; font-weight: 700; line-height: 1.2; }
+        h2 { font-size: 14px; font-weight: 400; opacity: 0.8; }
+        h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+        
+        /* Titres de sections */
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        a:hover { text-decoration: line-through; opacity: 0.7; }
+        ul { list-style: none; }
+
+        /* --- LAYOUT --- */
+        .border-right { border-right: var(--border-style); }
+        .bold { font-weight: 700; }
+        
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 20px;
+            border-bottom: var(--border-style);
+        }
+
+        .identity-block { display: flex; align-items: center; gap: 20px; }
+
+        .profile-picture-container {
+            width: 80px; height: 80px;
+            border: var(--border-style);
+            overflow: hidden;
+            background-color: #ddd;
+            flex-shrink: 0;
+        }
+
+        .profile-picture-container img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center 20%;
+            filter: grayscale(100%);
+        }
+
+        nav ul { display: flex; gap: 30px; font-weight: 700; }
+
+        /* --- TECH BAR --- */
+        .tech-bar {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            border-bottom: var(--border-style);
+        }
+        .tech-item { padding: 15px; font-size: 12px; }
+
+        /* --- ABOUT --- */
+        #about {
+            display: grid; grid-template-columns: 2fr 1fr;
+            border-bottom: var(--border-style);
+        }
+        .about-bio, .about-info { padding: 20px 15px; }
+        .about-bio p { margin-bottom: 15px; text-align: justify; text-transform: none; }
+        .about-info ul li { margin-bottom: 12px; display: flex; flex-direction: column; }
+        .info-label { opacity: 0.6; font-size: 11px; margin-bottom: 3px; text-transform: uppercase;}
+
+        /* --- SECTIONS PROJETS --- */
+        .exam-section { margin-top: 60px; }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            border: var(--border-style);
+            background: var(--bg-color);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .project-card:hover { background-color: #ffffff; }
+
+        .image-aspect-ratio {
+            width: 100%; aspect-ratio: 16/9;
+            overflow: hidden; border-bottom: var(--border-style);
+            background-color: #cccccc;
+        }
+        .image-aspect-ratio img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(100%) contrast(1.2);
+            transition: all 0.3s ease;
+        }
+        .project-card:hover .image-aspect-ratio img {
+            filter: grayscale(0%) contrast(1); transform: scale(1.02);
+        }
+
+        .project-info { padding: 15px; }
+        .project-tags { margin-top: 10px; font-size: 11px; opacity: 0.7; }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: var(--border-style);
+            padding: 30px 0; margin-top: 80px;
+            display: flex; justify-content: space-between;
+        }
+        .footer-links { display: flex; gap: 20px; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 20px; }
+            nav ul { flex-direction: column; gap: 10px; }
+            .tech-bar, #about, .projects-grid { grid-template-columns: 1fr; }
+            .about-bio, .tech-item { border-right: none !important; border-bottom: var(--border-style); }
+            footer { flex-direction: column; gap: 20px; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="identity-block">
+            <div class="profile-picture-container">
+                <img src="profil.png" alt="Wesley Amavi">
+            </div>
+            <div>
+                <h1>WESLEY AMAVI</h1>
+                <h2>PORTFOLIO BTS SIO • OPTION SISR</h2>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#about">À PROPOS</a></li>
+                <li><a href="#e5">E5 (8)</a></li>
+                <li><a href="#e6">E6 (2)</a></li>
+                <li><a href="#veille">VEILLE</a></li>
+                <li><a href="mailto:wesley.amv16@gmail.com">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="tech-bar bold">
+        <div class="tech-item border-right">
+            <span style="opacity:0.6;">[STATUT]</span> ÉTUDIANT SISR
+        </div>
+        <div class="tech-item border-right">
+            <span style="opacity:0.6;">[OS PRINCIPAL]</span> DEBIAN / WINDOWS SVR
+        </div>
+        <div class="tech-item">
+            <span style="opacity:0.6;">[RÉSEAU]</span> CISCO / PACKET TRACER
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="about-bio border-right">
+            <h3>À PROPOS</h3>
+            <p>
+                Actuellement étudiant en première année de BTS SIO (Services Informatiques aux Organisations) – option SISR (Solutions d'Infrastructure, Systèmes et Réseaux) à l'Insta Paris, je suis passionné par l’informatique et les nouvelles technologies.
+            </p>
+            <p>
+                Après l’obtention de mon Bac STMG en 2024, j’ai choisi cette formation afin de développer mes compétences en administration des systèmes et réseaux, tout en approfondissant mes connaissances sur les infrastructures IT.
+            </p>
+        </div>
+        <div class="about-info">
+            <h3>INFORMATIONS</h3>
+            <ul>
+                <li><span class="info-label">📍 ÉCOLE</span><span>Insta - Paris (75)</span></li>
+                <li><span class="info-label">🎓 DIPLÔME</span><span>BTS SIO (2024 - 2026)</span></li>
+                <li><span class="info-label">📞 TÉLÉPHONE</span><span>07 67 75 35 41</span></li>
+                <li><span class="info-label">📧 EMAIL</span><a href="mailto:wesley.amv16@gmail.com">wesley.amv16@gmail.com</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="e5" class="exam-section">
+        <div class="section-title">E5 — PRODUCTION DE SERVICES (8)</div>
+        
+        <div class="projects-grid">
+            
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1558494949-ef526b0042a0?q=80&w=800&auto=format&fit=crop" alt="AD">
+                    </div>
+                    <div class="project-info">
+                        <h3>DÉPLOIEMENT ACTIVE DIRECTORY</h3>
+                        <p class="project-tags">[WIN SVR] [DNS/DHCP] [GPO]</p>
+                    </div>
+                </a>
+            </article>
+
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1563206767-5b1d972d9323?q=80&w=800&auto=format&fit=crop" alt="GLPI">
+                    </div>
+                    <div class="project-info">
+                        <h3>MISE EN PLACE GLPI</h3>
+                        <p class="project-tags">[TICKETING] [INVENTAIRE] [LAMP]</p>
+                    </div>
+                </a>
+            </article>
+
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop" alt="Virtualisation">
+                    </div>
+                    <div class="project-info">
+                        <h3>VIRTUALISATION PROXMOX</h3>
+                        <p class="project-tags">[HYPERVISEUR] [LXC] [VM]</p>
+                    </div>
+                </a>
+            </article>
+
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=800&auto=format&fit=crop" alt="Réseau">
+                    </div>
+                    <div class="project-info">
+                        <h3>SEGMENTATION VLAN</h3>
+                        <p class="project-tags">[CISCO] [SWITCHING] [ROUTAGE]</p>
+                    </div>
+                </a>
+            </article>
+
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=800&auto=format&fit=crop" alt="Sauvegarde">
+                    </div>
+                    <div class="project-info">
+                        <h3>SOLUTION DE SAUVEGARDE</h3>
+                        <p class="project-tags">[VEEAM] [NAS] [RÉTENTION]</p>
+                    </div>
+                </a>
+            </article>
+
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=800&auto=format&fit=crop" alt="VPN">
+                    </div>
+                    <div class="project-info">
+                        <h3>ACCÈS DISTANT (VPN)</h3>
+                        <p class="project-tags">[OPENVPN] [SÉCURITÉ] [TUNNELING]</p>
+                    </div>
+                </a>
+            </article>
+
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800&auto=format&fit=crop" alt="Partage">
+                    </div>
+                    <div class="project-info">
+                        <h3>SERVEUR DE FICHIERS</h3>
+                        <p class="project-tags">[SAMBA] [DROITS NTFS] [QUOTAS]</p>
+                    </div>
+                </a>
+            </article>
+
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop" alt="Supervision">
+                    </div>
+                    <div class="project-info">
+                        <h3>SUPERVISION ZABBIX</h3>
+                        <p class="project-tags">[MONITORING] [SNMP] [ALERTES]</p>
+                    </div>
+                </a>
+            </article>
+
+        </div>
+    </section>
+
+    <section id="e6" class="exam-section">
+        <div class="section-title">E6 — GESTION DU PATRIMOINE (2)</div>
+
+        <div class="projects-grid">
+            
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1563206767-5b1d972d9323?q=80&w=800&auto=format&fit=crop" alt="Firewall">
+                    </div>
+                    <div class="project-info">
+                        <h3>[RÉSEAU] SÉCURITÉ PÉRIMÉTRIQUE</h3>
+                        <p class="project-tags">[PFSENSE] [FIREWALL] [FILTRAGE]</p>
+                        <p style="margin-top:10px; font-size:11px; opacity:0.8;">Maintien en condition opérationnelle de la sécurité réseau et gestion des règles.</p>
+                    </div>
+                </a>
+            </article>
+
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=800&auto=format&fit=crop" alt="System">
+                    </div>
+                    <div class="project-info">
+                        <h3>[SYSTÈME] GESTION DES MISES À JOUR</h3>
+                        <p class="project-tags">[WSUS] [PATCH] [WINDOWS SVR]</p>
+                        <p style="margin-top:10px; font-size:11px; opacity:0.8;">Déploiement centralisé des correctifs de sécurité sur le parc serveur.</p>
+                    </div>
+                </a>
+            </article>
+
+        </div>
+    </section>
+
+    <section id="veille" class="exam-section">
+        <div class="section-title">VEILLE TECHNOLOGIQUE</div>
+        
+        <div class="projects-grid">
+            <article class="project-card">
+                <a href="#">
+                    <div class="image-aspect-ratio">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop" alt="DDoS Security">
+                    </div>
+                    <div class="project-info">
+                        <h3>SUJET : LES ATTAQUES DDOS & INFRASTRUCTURES</h3>
+                        <p class="project-tags">[SÉCURITÉ] [BOTNETS] [CLOUD ARMOR] [WAF]</p>
+                        <p style="margin-top:10px; font-size:12px; opacity:0.8; text-transform: none;">
+                            <strong>Problématique :</strong> Comment les attaques DDoS évoluent-elles face aux stratégies de défense ?<br>
+                            <strong>Contexte :</strong> Hausse de 137% des attaques en Europe. Attaque record de Juin 2025 (46 millions req/s).<br>
+                            <strong>Solutions étudiées :</strong> Pare-feu, WAF, CDN (Cloudflare) et supervision Zabbix.
+                        </p>
+                        <p class="project-tags" style="margin-top:10px; color:#555;">SOURCES : LINK11, GOOGLE CLOUD BLOG, CLOUDFLARE</p>
+                    </div>
+                </a>
+            </article>
+        </div>
+    </section>
+
+    <footer>
+        <div class="bold">© 2025 WESLEY AMAVI — SISR</div>
+        <div class="footer-links bold">
+            <a href="https://www.linkedin.com/in/wesley-amavi-701329353/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+            <a href="#" target="_blank">GITHUB</a>
+            <a href="mailto:wesley.amv16@gmail.com">EMAIL</a>
+        </div>
+    </footer>
+
+</body>
+</html>
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
