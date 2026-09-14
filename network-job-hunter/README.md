@@ -8,7 +8,8 @@ Le pipeline :
 1. **JobFetcher** récupère les offres publiées dans les **7 derniers jours**
    via l'API officielle [France Travail](https://francetravail.io) (filtre
    alternance + mots-clés infra réseau).
-2. **AtsOptimizer** appelle l'API Anthropic pour extraire les mots-clés
+2. **AtsOptimizer** appelle l'API [Gemini](https://ai.google.dev/) (gratuite,
+   modèle `gemini-2.5-flash` par défaut) pour extraire les mots-clés
    techniques de l'offre (BGP, OSPF, VLAN, Ansible...), calculer un score de
    correspondance avec le profil, et réordonner/reformuler les puces du CV en
    mettant en avant les compétences pertinentes — sans jamais inventer
@@ -30,6 +31,9 @@ source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # puis remplir les identifiants
 ```
+
+La clé `GEMINI_API_KEY` est gratuite : créer une clé sur
+[Google AI Studio](https://aistudio.google.com/apikey).
 
 Dépendances système : [LibreOffice](https://www.libreoffice.org/) (commande
 `soffice`) pour la conversion DOCX → PDF. Sous Windows/Mac sans LibreOffice,
@@ -75,7 +79,7 @@ config/settings.py       Configuration (.env) et constantes du domaine réseau
 src/models.py            Dataclasses JobOffer, CandidateProfile, ApplicationRecord
 src/job_sources/         Interface JobSource + adaptateur France Travail
 src/job_fetcher.py       Agrégation, filtre 7 jours + domaine, dédoublonnage
-src/ats_optimizer.py     Optimisation ATS via l'API Anthropic
+src/ats_optimizer.py     Optimisation ATS via l'API Gemini
 src/doc_generator.py     Génération CV .docx -> .pdf compatible ATS
 src/mail_dispatcher.py   Envoi de la candidature par email
 src/tracker.py           Suivi SQLite des candidatures envoyées

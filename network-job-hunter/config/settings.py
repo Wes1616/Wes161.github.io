@@ -51,9 +51,9 @@ FRANCE_TRAVAIL_SEARCH_URL = (
 )
 FRANCE_TRAVAIL_SCOPE = "api_offresdemploiv2 o2dsoffre"
 
-# --- Anthropic ---------------------------------------------------------------
-ANTHROPIC_API_KEY = _env("ANTHROPIC_API_KEY")
-ANTHROPIC_MODEL = "claude-sonnet-5"
+# --- Gemini (Google Generative AI) --------------------------------------------
+GEMINI_API_KEY = _env("GEMINI_API_KEY")
+GEMINI_MODEL = _env("GEMINI_MODEL", "gemini-2.5-flash")
 
 # --- SMTP ----------------------------------------------------------------------
 SMTP_HOST = _env("SMTP_HOST", "smtp.gmail.com")

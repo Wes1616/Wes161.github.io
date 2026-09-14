@@ -2,7 +2,7 @@
 """Script de vérification manuelle (phase VERIFY) :
 
 Génère un CV à partir d'une offre fictive "Technicien Réseau en alternance"
-(sans appeler l'API Anthropic — un OptimizedContent factice est utilisé),
+(sans appeler l'API Gemini — un OptimizedContent factice est utilisé),
 puis imprime un rapport de conformité ATS : nombre de tableaux, nombre de
 colonnes, police utilisée, absence d'images, présence des mots-clés,
 et tente la conversion en PDF.

@@ -27,23 +27,19 @@ def load_profile() -> CandidateProfile:
     return CandidateProfile.from_yaml(Path(__file__).parent.parent / "data" / "profile.yaml")
 
 
-class FakeMessages:
-    def __init__(self, tool_input: dict) -> None:
-        self.tool_input = tool_input
+class FakeGeminiModel:
+    def __init__(self, response_payload: dict) -> None:
+        self.response_payload = response_payload
+        self.last_args: tuple | None = None
         self.last_kwargs: dict | None = None
 
-    def create(self, **kwargs):
+    def generate_content(self, *args, **kwargs):
+        self.last_args = args
         self.last_kwargs = kwargs
-        tool_use_block = SimpleNamespace(type="tool_use", input=self.tool_input)
-        return SimpleNamespace(content=[tool_use_block])
+        return SimpleNamespace(text=json.dumps(self.response_payload))
 
 
-class FakeAnthropicClient:
-    def __init__(self, tool_input: dict) -> None:
-        self.messages = FakeMessages(tool_input)
-
-
-def make_fake_tool_response() -> dict:
+def make_fake_response_payload() -> dict:
     return {
         "matched_keywords": ["VLAN", "DHCP", "Cisco Packet Tracer"],
         "match_score": 78,
@@ -63,16 +59,16 @@ def make_fake_tool_response() -> dict:
     }
 
 
-def test_optimize_parses_structured_tool_response() -> None:
+def test_optimize_parses_structured_json_response() -> None:
     job = load_job()
     profile = load_profile()
-    fake_client = FakeAnthropicClient(make_fake_tool_response())
-    optimizer = AtsOptimizer(client=fake_client)
+    fake_model = FakeGeminiModel(make_fake_response_payload())
+    optimizer = AtsOptimizer(model=fake_model)
 
     result = optimizer.optimize(job, profile)
 
     assert result.match_score == 78
     assert "VLAN" in result.matched_keywords
     assert result.rewritten_experiences[0].poste.startswith("Projet BTS")
-    # Le tool_choice doit forcer l'appel de l'outil structuré (pas de texte libre à parser)
-    assert fake_client.messages.last_kwargs["tool_choice"]["name"] == "submit_ats_analysis"
+    # Le mode JSON doit être forcé (pas de texte libre à parser)
+    assert fake_model.last_kwargs["generation_config"]["response_mime_type"] == "application/json"
