@@ -1,0 +1,10 @@
+{
+  "job_id": "fixture-job-1",
+  "title": "Technicien Réseau et Infrastructure - Alternance",
+  "company": "NetSecure Solutions",
+  "description": "Au sein de notre équipe infrastructure, vous participerez à la configuration et à la supervision de VLAN, à la gestion de serveurs DHCP, au routage inter-sites, et à la mise en place de premières briques de sécurité réseau (pare-feu, WAF). Vous utiliserez Cisco Packet Tracer et des outils de supervision type Zabbix.",
+  "url": "https://example.com/offres/fixture-job-1",
+  "date_posted": "2026-09-12",
+  "location": "Paris (75)",
+  "source": "fixture"
+}

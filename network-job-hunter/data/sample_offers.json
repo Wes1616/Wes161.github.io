@@ -1,0 +1,20 @@
+[
+  {
+    "job_id": "demo-1",
+    "title": "Technicien Réseau et Infrastructure - Alternance",
+    "company": "NetSecure Solutions",
+    "description": "Au sein de notre équipe infrastructure, vous participerez à la configuration et à la supervision de VLAN, à la gestion de serveurs DHCP, au routage inter-sites, et à la mise en place de premières briques de sécurité réseau (pare-feu, WAF). Vous utiliserez Cisco Packet Tracer et des outils de supervision type Zabbix.",
+    "url": "https://example.com/offres/demo-1",
+    "location": "Paris (75)",
+    "contact_email": "recrutement@example.com"
+  },
+  {
+    "job_id": "demo-2",
+    "title": "Alternant Administrateur Systèmes et Réseaux",
+    "company": "InfraCloud SAS",
+    "description": "Vous accompagnez l'équipe SISR dans le déploiement de routeurs et commutateurs Cisco, la gestion des VLAN, la mise en place du routage RIP/OSPF, et la surveillance des accès réseau.",
+    "url": "https://example.com/offres/demo-2",
+    "location": "Lyon (69)",
+    "contact_email": ""
+  }
+]

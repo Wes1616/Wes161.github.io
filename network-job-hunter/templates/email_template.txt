@@ -1,0 +1,21 @@
+Objet : Candidature — {target_title} — {full_name}
+
+Bonjour,
+
+Je me permets de vous soumettre ma candidature pour le poste de « {job_title} »
+au sein de {company}, publié récemment.
+
+Actuellement en {formation_courante}, je recherche une alternance en
+infrastructure réseau me permettant de mettre en pratique mes compétences en
+{matched_keywords}.
+
+Vous trouverez mon CV en pièce jointe, adapté aux exigences de cette offre.
+Je reste à votre disposition pour un entretien afin d'échanger plus en détail
+sur ma motivation et mon parcours.
+
+Je vous remercie pour l'attention portée à ma candidature.
+
+Cordialement,
+{full_name}
+{email}
+{phone}

@@ -1,0 +1,79 @@
+# Profil de base du candidat.
+# Ce fichier est la source de vérité pour la génération des CV : l'AtsOptimizer
+# ne fait que réordonner/reformuler ces informations pour chaque offre, il n'en
+# invente jamais de nouvelles. Complète les champs marqués "# TODO".
+
+identity:
+  full_name: "Wesley Amavi"
+  target_title: "Technicien Réseau & Infrastructure — Alternance"
+  email: "wesley.amv16@gmail.com"          # TODO: vérifier / remplacer si besoin
+  phone: ""                                 # TODO: numéro de téléphone
+  location: ""                              # TODO: ville, code postal
+  linkedin: ""                              # TODO: URL profil LinkedIn (optionnel)
+  github: ""                                # TODO: URL GitHub (optionnel)
+
+summary: >
+  Étudiant en BTS SIO option SISR (Solutions d'Infrastructure, Systèmes et
+  Réseaux), à la recherche d'une alternance en infrastructure réseau. Solides
+  bases en configuration de routeurs et commutateurs Cisco, gestion de VLAN,
+  protocoles de routage (RIP, DHCP), et sensibilisation active à la
+  cybersécurité des réseaux (attaques DDoS, moyens de protection).
+
+formation:
+  - diplome: "BTS SIO — option SISR (Solutions d'Infrastructure, Systèmes et Réseaux)"
+    etablissement: "INSTA"
+    periode: "2024 - 2026"
+    details: "2e année. Projets réseau : déploiement DHCP multi-VLAN, routage RIP v2, veille technologique cybersécurité (attaques DDoS)."
+  # TODO: ajouter le diplôme précédent (Bac, etc.) si pertinent
+
+competences:
+  routage_commutation:
+    - "Configuration de routeurs et commutateurs Cisco (IOS CLI)"
+    - "VLAN et sous-interfaces (802.1Q)"
+    - "DHCP (pools, relais, réservations d'adresses)"
+    - "Routage dynamique RIP v2"
+    - "Adressage IP et sous-réseaux (VLSM)"
+  securite_reseau:
+    - "Sensibilisation aux attaques DDoS (volumétriques, protocolaires, applicatives)"
+    - "Notions de pare-feu, WAF, CDN et services cloud anti-DDoS"
+    - "Bonnes pratiques de sécurisation des équipements"
+  supervision_exploitation:
+    - "Notions de supervision réseau (Zabbix, Centreon)"
+    - "Analyse de journaux et diagnostic de connectivité"
+    - "Documentation technique et procédures"
+  outils:
+    - "Cisco Packet Tracer"
+    - "Suite Microsoft / bureautique"
+    - "Veille technologique"
+  # TODO: ajouter automatisation/cloud si acquis (Ansible, AWS/Azure/GCP...)
+
+experiences:
+  - poste: "Projet BTS — Déploiement d'un serveur DHCP et gestion des baux IP"
+    entreprise: "Projet d'études (cas Orange, établissement scolaire)"
+    periode: "2025"
+    lieu: ""
+    bullets:
+      - "Configuration de deux routeurs Cisco en serveurs DHCP sur plusieurs VLAN"
+      - "Création de pools d'adresses avec passerelle et serveur DNS dédiés"
+      - "Mise en place du routage inter-VLAN avec RIP v2 pour la distribution des adresses"
+      - "Tests de connectivité et validation de l'attribution des baux IP entre postes clients"
+      - "Analyse des journaux DHCP pour vérifier l'absence d'erreurs"
+  - poste: "Veille technologique — Sécurité des infrastructures réseau"
+    entreprise: "Projet d'études BTS SIO SISR"
+    periode: "2025"
+    lieu: ""
+    bullets:
+      - "Analyse du fonctionnement des attaques DDoS (volumétriques, protocolaires, applicatives)"
+      - "Étude de cas réels (records de trafic, hacktivisme) et de leurs impacts sur les infrastructures"
+      - "Recensement des moyens de protection : pare-feu, WAF, CDN, services cloud anti-DDoS"
+  # TODO: ajouter stages, jobs étudiants, projets personnels supplémentaires
+
+certifications:
+  []
+  # TODO: ex. "Cisco CCNA (en préparation)"
+
+langues:
+  - langue: "Français"
+    niveau: "Langue maternelle"
+  - langue: "Anglais"
+    niveau: "Technique / professionnel"  # TODO: ajuster le niveau réel
