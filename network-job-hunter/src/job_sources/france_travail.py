@@ -6,6 +6,7 @@ francetravail.io). Nécessite les scopes "api_offresdemploiv2 o2dsoffre".
 """
 from __future__ import annotations
 
+import logging
 import time
 from datetime import date, datetime
 
@@ -14,6 +15,8 @@ import requests
 from config import settings
 from src.job_sources.base import JobSource
 from src.models import JobOffer
+
+log = logging.getLogger(__name__)
 
 
 class FranceTravailSource(JobSource):
@@ -70,14 +73,23 @@ class FranceTravailSource(JobSource):
             # Paramètre booléen dédié (distinct de typeContrat) — voir
             # https://francetravail.io/produits-partenaires/catalogue/offres-emploi/documentation
             params["alternance"] = "true"
+
+        # TODO(debug temporaire) : nombre brut d'offres retournées par l'API (1/3)
+        log.info("[DEBUG][FranceTravail] requête search avec params=%s", params)
         response = self.session.get(
             settings.FRANCE_TRAVAIL_SEARCH_URL,
             params=params,
             headers={"Authorization": f"Bearer {token}"},
             timeout=20,
         )
+        log.info(
+            "[DEBUG][FranceTravail] réponse HTTP %s — Content-Range=%s",
+            response.status_code,
+            response.headers.get("Content-Range", "absent"),
+        )
         # 204 = aucune offre trouvée
         if response.status_code == 204:
+            log.info("[DEBUG][FranceTravail] 0 offre brute (204 No Content)")
             return []
         if response.status_code >= 400:
             raise requests.HTTPError(
@@ -87,6 +99,7 @@ class FranceTravailSource(JobSource):
             )
 
         results = response.json().get("resultats", [])
+        log.info("[DEBUG][FranceTravail] %d offre(s) brute(s) reçue(s) de l'API", len(results))
         return [self._to_job_offer(item) for item in results]
 
     @staticmethod
