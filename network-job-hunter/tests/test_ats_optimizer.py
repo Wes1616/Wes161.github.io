@@ -27,16 +27,19 @@ def load_profile() -> CandidateProfile:
     return CandidateProfile.from_yaml(Path(__file__).parent.parent / "data" / "profile.yaml")
 
 
-class FakeGeminiModel:
+class FakeModels:
     def __init__(self, response_payload: dict) -> None:
         self.response_payload = response_payload
-        self.last_args: tuple | None = None
         self.last_kwargs: dict | None = None
 
-    def generate_content(self, *args, **kwargs):
-        self.last_args = args
+    def generate_content(self, **kwargs):
         self.last_kwargs = kwargs
         return SimpleNamespace(text=json.dumps(self.response_payload))
+
+
+class FakeGeminiClient:
+    def __init__(self, response_payload: dict) -> None:
+        self.models = FakeModels(response_payload)
 
 
 def make_fake_response_payload() -> dict:
@@ -62,8 +65,8 @@ def make_fake_response_payload() -> dict:
 def test_optimize_parses_structured_json_response() -> None:
     job = load_job()
     profile = load_profile()
-    fake_model = FakeGeminiModel(make_fake_response_payload())
-    optimizer = AtsOptimizer(model=fake_model)
+    fake_client = FakeGeminiClient(make_fake_response_payload())
+    optimizer = AtsOptimizer(client=fake_client)
 
     result = optimizer.optimize(job, profile)
 
@@ -71,4 +74,5 @@ def test_optimize_parses_structured_json_response() -> None:
     assert "VLAN" in result.matched_keywords
     assert result.rewritten_experiences[0].poste.startswith("Projet BTS")
     # Le mode JSON doit être forcé (pas de texte libre à parser)
-    assert fake_model.last_kwargs["generation_config"]["response_mime_type"] == "application/json"
+    config = fake_client.models.last_kwargs["config"]
+    assert config.response_mime_type == "application/json"

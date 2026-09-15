@@ -1,6 +1,6 @@
 """Optimisation ATS : extrait les mots-clés d'une offre et adapte le profil.
 
-Utilise l'API Gemini (`google-generativeai`) en mode JSON forcé
+Utilise l'API Gemini via le SDK `google-genai` en mode JSON forcé
 (`response_mime_type="application/json"`) pour garantir une sortie
 structurée et exploitable directement, sans parsing de texte libre.
 
@@ -12,7 +12,8 @@ from __future__ import annotations
 
 import json
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from config import settings
 from src.models import CandidateProfile, Experience, JobOffer, OptimizedContent
@@ -58,15 +59,8 @@ forme, sans aucun texte avant/après ni bloc markdown :
 
 
 class AtsOptimizer:
-    def __init__(self, model: genai.GenerativeModel | None = None) -> None:
-        if model is not None:
-            self.model = model
-        else:
-            genai.configure(api_key=settings.GEMINI_API_KEY)
-            self.model = genai.GenerativeModel(
-                model_name=settings.GEMINI_MODEL,
-                system_instruction=_SYSTEM_PROMPT,
-            )
+    def __init__(self, client: genai.Client | None = None) -> None:
+        self.client = client or genai.Client(api_key=settings.GEMINI_API_KEY)
 
     def optimize(self, job: JobOffer, profile: CandidateProfile) -> OptimizedContent:
         profile_payload = {
@@ -84,11 +78,17 @@ class AtsOptimizer:
             ],
         }
 
-        response = self.model.generate_content(
-            f"Profil du candidat (JSON) :\n{profile_payload}\n\n"
-            f"Offre d'emploi — {job.title} chez {job.company} :\n"
-            f"{job.description}",
-            generation_config={"response_mime_type": "application/json"},
+        response = self.client.models.generate_content(
+            model=settings.GEMINI_MODEL,
+            contents=(
+                f"Profil du candidat (JSON) :\n{profile_payload}\n\n"
+                f"Offre d'emploi — {job.title} chez {job.company} :\n"
+                f"{job.description}"
+            ),
+            config=types.GenerateContentConfig(
+                system_instruction=_SYSTEM_PROMPT,
+                response_mime_type="application/json",
+            ),
         )
 
         data = json.loads(response.text)
