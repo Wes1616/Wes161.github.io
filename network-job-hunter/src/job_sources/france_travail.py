@@ -63,6 +63,20 @@ class FranceTravailSource(JobSource):
         return self._token
 
     def fetch(self, keywords: list[str], max_days: int) -> list[JobOffer]:
+        if len(keywords) > 1:
+            # motsCles="a,b,c" est traité par l'API comme un ET logique, pas
+            # un OU : ça restreint la recherche au lieu de l'élargir (voire
+            # 0 résultat). L'appelant (JobFetcher) est censé appeler fetch()
+            # une fois par mot-clé — un appel avec plusieurs mots-clés ici
+            # reproduirait le bug qu'on vient de corriger.
+            log.warning(
+                "[DEBUG][FranceTravail] fetch() appelé avec %d mots-clés combinés (%r) — "
+                "motsCles utilisera un ET logique côté API, ce qui restreint trop la "
+                "recherche. Préférer un appel par mot-clé.",
+                len(keywords),
+                keywords,
+            )
+
         token = self._get_token()
         params = {
             "motsCles": ",".join(keywords),

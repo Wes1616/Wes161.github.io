@@ -33,16 +33,24 @@ class JobFetcher:
         pour le domaine réseau, non déjà connues du tracker, sans doublon."""
         keywords = keywords or settings.DEFAULT_SEARCH_KEYWORDS
 
-        # --- Étape 0 : récupération brute, toutes sources confondues ------
+        # --- Étape 0 : récupération brute, UNE requête par mot-clé ---------
+        # Une requête combinant tous les mots-clés en une chaîne séparée par
+        # virgules (motsCles="a,b,c") est traitée par l'API France Travail
+        # comme un ET logique, pas un OU — d'où des recherches trop
+        # restrictives (souvent 0 résultat). On interroge donc chaque source
+        # une fois par mot-clé, puis on fusionne les résultats (dédoublonnés
+        # par job_id ci-dessous).
         raw_offers: list[JobOffer] = []
         for source in self.sources:
-            source_offers = source.fetch(keywords, self.posted_within_days)
-            log.info(
-                "[DEBUG][JobFetcher] source=%s -> %d offre(s) brute(s)",
-                source.name,
-                len(source_offers),
-            )
-            raw_offers.extend(source_offers)
+            for keyword in keywords:
+                keyword_offers = source.fetch([keyword], self.posted_within_days)
+                log.info(
+                    "[DEBUG][JobFetcher] source=%s mot-clé=%r -> %d offre(s) brute(s)",
+                    source.name,
+                    keyword,
+                    len(keyword_offers),
+                )
+                raw_offers.extend(keyword_offers)
 
         seen_ids: set[str] = set()
         deduped_raw: list[JobOffer] = []
@@ -52,7 +60,8 @@ class JobFetcher:
                 deduped_raw.append(offer)
         # TODO(debug temporaire) : nombre brut d'offres avant tout filtre (1/3)
         log.info(
-            "[DEBUG][JobFetcher] 1) %d offre(s) brute(s) au total (toutes sources, doublons inter-sources retirés)",
+            "[DEBUG][JobFetcher] 1) %d offre(s) brute(s) au total "
+            "(toutes sources et mots-clés confondus, doublons retirés)",
             len(deduped_raw),
         )
 
