@@ -27,19 +27,26 @@ def load_profile() -> CandidateProfile:
     return CandidateProfile.from_yaml(Path(__file__).parent.parent / "data" / "profile.yaml")
 
 
-class FakeModels:
+class FakeCompletions:
     def __init__(self, response_payload: dict) -> None:
         self.response_payload = response_payload
         self.last_kwargs: dict | None = None
 
-    def generate_content(self, **kwargs):
+    def create(self, **kwargs):
         self.last_kwargs = kwargs
-        return SimpleNamespace(text=json.dumps(self.response_payload))
+        message = SimpleNamespace(content=json.dumps(self.response_payload))
+        choice = SimpleNamespace(message=message)
+        return SimpleNamespace(choices=[choice])
 
 
-class FakeGeminiClient:
+class FakeChat:
     def __init__(self, response_payload: dict) -> None:
-        self.models = FakeModels(response_payload)
+        self.completions = FakeCompletions(response_payload)
+
+
+class FakeGroqClient:
+    def __init__(self, response_payload: dict) -> None:
+        self.chat = FakeChat(response_payload)
 
 
 def make_fake_response_payload() -> dict:
@@ -65,7 +72,7 @@ def make_fake_response_payload() -> dict:
 def test_optimize_parses_structured_json_response() -> None:
     job = load_job()
     profile = load_profile()
-    fake_client = FakeGeminiClient(make_fake_response_payload())
+    fake_client = FakeGroqClient(make_fake_response_payload())
     optimizer = AtsOptimizer(client=fake_client)
 
     result = optimizer.optimize(job, profile)
@@ -74,5 +81,6 @@ def test_optimize_parses_structured_json_response() -> None:
     assert "VLAN" in result.matched_keywords
     assert result.rewritten_experiences[0].poste.startswith("Projet BTS")
     # Le mode JSON doit être forcé (pas de texte libre à parser)
-    config = fake_client.models.last_kwargs["config"]
-    assert config.response_mime_type == "application/json"
+    kwargs = fake_client.chat.completions.last_kwargs
+    assert kwargs["response_format"] == {"type": "json_object"}
+    assert kwargs["messages"][0]["role"] == "system"

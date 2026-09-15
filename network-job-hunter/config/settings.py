@@ -55,9 +55,9 @@ FRANCE_TRAVAIL_SEARCH_URL = (
 )
 FRANCE_TRAVAIL_SCOPE = "api_offresdemploiv2 o2dsoffre"
 
-# --- Gemini (Google Generative AI) --------------------------------------------
-GEMINI_API_KEY = _env("GEMINI_API_KEY")
-GEMINI_MODEL = _env("GEMINI_MODEL", "gemini-2.5-flash")
+# --- Groq (API compatible OpenAI) ----------------------------------------------
+GROQ_API_KEY = _env("GROQ_API_KEY")
+GROQ_MODEL = _env("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 # --- SMTP ----------------------------------------------------------------------
 SMTP_HOST = _env("SMTP_HOST", "smtp.gmail.com")

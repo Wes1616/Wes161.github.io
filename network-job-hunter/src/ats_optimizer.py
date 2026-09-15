@@ -1,7 +1,7 @@
 """Optimisation ATS : extrait les mots-clés d'une offre et adapte le profil.
 
-Utilise l'API Gemini via le SDK `google-genai` en mode JSON forcé
-(`response_mime_type="application/json"`) pour garantir une sortie
+Utilise l'API Groq (SDK `groq`, compatible OpenAI) en mode JSON forcé
+(`response_format={"type": "json_object"}`) pour garantir une sortie
 structurée et exploitable directement, sans parsing de texte libre.
 
 Contrainte forte : le modèle ne doit JAMAIS inventer une expérience, une
@@ -12,8 +12,7 @@ from __future__ import annotations
 
 import json
 
-from google import genai
-from google.genai import types
+from groq import Groq
 
 from config import settings
 from src.models import CandidateProfile, Experience, JobOffer, OptimizedContent
@@ -59,8 +58,8 @@ forme, sans aucun texte avant/après ni bloc markdown :
 
 
 class AtsOptimizer:
-    def __init__(self, client: genai.Client | None = None) -> None:
-        self.client = client or genai.Client(api_key=settings.GEMINI_API_KEY)
+    def __init__(self, client: Groq | None = None) -> None:
+        self.client = client or Groq(api_key=settings.GROQ_API_KEY)
 
     def optimize(self, job: JobOffer, profile: CandidateProfile) -> OptimizedContent:
         profile_payload = {
@@ -78,20 +77,23 @@ class AtsOptimizer:
             ],
         }
 
-        response = self.client.models.generate_content(
-            model=settings.GEMINI_MODEL,
-            contents=(
-                f"Profil du candidat (JSON) :\n{profile_payload}\n\n"
-                f"Offre d'emploi — {job.title} chez {job.company} :\n"
-                f"{job.description}"
-            ),
-            config=types.GenerateContentConfig(
-                system_instruction=_SYSTEM_PROMPT,
-                response_mime_type="application/json",
-            ),
+        response = self.client.chat.completions.create(
+            model=settings.GROQ_MODEL,
+            messages=[
+                {"role": "system", "content": _SYSTEM_PROMPT},
+                {
+                    "role": "user",
+                    "content": (
+                        f"Profil du candidat (JSON) :\n{profile_payload}\n\n"
+                        f"Offre d'emploi — {job.title} chez {job.company} :\n"
+                        f"{job.description}"
+                    ),
+                },
+            ],
+            response_format={"type": "json_object"},
         )
 
-        data = json.loads(response.text)
+        data = json.loads(response.choices[0].message.content)
 
         return OptimizedContent(
             matched_keywords=data["matched_keywords"],
