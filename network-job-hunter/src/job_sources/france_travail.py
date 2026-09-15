@@ -63,10 +63,13 @@ class FranceTravailSource(JobSource):
         token = self._get_token()
         params = {
             "motsCles": ",".join(keywords),
-            "typeContrat": settings.ALTERNANCE_CONTRACT_TYPE,
             "publieeDepuis": max_days,
             "sort": 1,  # tri par date de publication décroissante
         }
+        if settings.ALTERNANCE_ONLY:
+            # Paramètre booléen dédié (distinct de typeContrat) — voir
+            # https://francetravail.io/produits-partenaires/catalogue/offres-emploi/documentation
+            params["alternance"] = "true"
         response = self.session.get(
             settings.FRANCE_TRAVAIL_SEARCH_URL,
             params=params,
@@ -76,7 +79,12 @@ class FranceTravailSource(JobSource):
         # 204 = aucune offre trouvée
         if response.status_code == 204:
             return []
-        response.raise_for_status()
+        if response.status_code >= 400:
+            raise requests.HTTPError(
+                f"France Travail search a échoué ({response.status_code}) — "
+                f"params={params} — corps de la réponse: {response.text}",
+                response=response,
+            )
 
         results = response.json().get("resultats", [])
         return [self._to_job_offer(item) for item in results]

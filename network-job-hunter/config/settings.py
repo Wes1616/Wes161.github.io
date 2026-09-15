@@ -16,7 +16,11 @@ def _env(name: str, default: str = "") -> str:
 
 # --- Filtre offres ---------------------------------------------------------
 POSTED_WITHIN_DAYS = 7
-ALTERNANCE_CONTRACT_TYPE = "E"  # code France Travail pour "Contrat d'apprentissage"
+# L'API France Travail expose l'alternance via le paramètre booléen dédié
+# "alternance", PAS via typeContrat (dont les seuls codes valides sont
+# CDI/CDD/MIS/SAI/LIB/REP/FRA/DDI/CCE/TTI/EEE — "E" y est invalide et
+# provoque un 400 Bad Request).
+ALTERNANCE_ONLY = True
 
 # Mots-clés utilisés pour la recherche ET pour filtrer les offres hors-sujet.
 DOMAIN_KEYWORDS = [
